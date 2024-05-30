@@ -1,0 +1,70 @@
+
+./build/yaz_oku_1.S.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+40000000 <_start>:
+40000000:	00000397          	auipc	x7,0x0
+40000004:	07438393          	addi	x7,x7,116 # 40000074 <tdat>
+40000008:	00000093          	addi	x1,x0,0
+4000000c:	25800113          	addi	x2,x0,600
+
+40000010 <here>:
+40000010:	0013a023          	sw	x1,0(x7)
+40000014:	00108093          	addi	x1,x1,1
+40000018:	00438393          	addi	x7,x7,4
+4000001c:	fe209ae3          	bne	x1,x2,40000010 <here>
+40000020:	00000397          	auipc	x7,0x0
+40000024:	05438393          	addi	x7,x7,84 # 40000074 <tdat>
+40000028:	00000093          	addi	x1,x0,0
+
+4000002c <reads>:
+4000002c:	0003a183          	lw	x3,0(x7)
+40000030:	00309a63          	bne	x1,x3,40000044 <fail>
+40000034:	00108093          	addi	x1,x1,1
+40000038:	00438393          	addi	x7,x7,4
+4000003c:	fe2098e3          	bne	x1,x2,4000002c <reads>
+40000040:	01c0006f          	jal	x0,4000005c <pass>
+
+40000044 <fail>:
+40000044:	00000033          	add	x0,x0,x0
+40000048:	00000033          	add	x0,x0,x0
+4000004c:	00000033          	add	x0,x0,x0
+40000050:	00000033          	add	x0,x0,x0
+40000054:	00000033          	add	x0,x0,x0
+40000058:	00000073          	ecall
+
+4000005c <pass>:
+4000005c:	00000033          	add	x0,x0,x0
+40000060:	00000033          	add	x0,x0,x0
+40000064:	00000033          	add	x0,x0,x0
+40000068:	00000033          	add	x0,x0,x0
+4000006c:	00000033          	add	x0,x0,x0
+40000070:	00000073          	ecall
+
+Disassembly of section .data:
+
+40000074 <tdat>:
+40000074:	ef be   	Address 0x0000000040000074 is out of bounds.
+
+40000078:	 
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1e41                	.2byte	0x1e41
+   2:	0000                	.2byte	0x0
+   4:	7200                	.2byte	0x7200
+   6:	7369                	.2byte	0x7369
+   8:	01007663          	bgeu	x0,x16,14 <_start-0x3fffffec>
+   c:	0014                	.2byte	0x14
+   e:	0000                	.2byte	0x0
+  10:	7205                	.2byte	0x7205
+  12:	3376                	.2byte	0x3376
+  14:	6932                	.2byte	0x6932
+  16:	7032                	.2byte	0x7032
+  18:	5f30                	.2byte	0x5f30
+  1a:	326d                	.2byte	0x326d
+  1c:	3070                	.2byte	0x3070
+	...

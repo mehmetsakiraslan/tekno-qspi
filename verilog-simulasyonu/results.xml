@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="123456789" />
+    <testcase classname="test_teknofest_wrapper" file="/home/mehmet/2024qspi/tekno-kizil/verilog-simulasyonu/test_teknofest_wrapper.py" lineno="77" name="test_teknofest_wrapper" ratio_time="35246.11972701536" sim_time_ns="2000055.001" time="56.74539542198181">
+      <failure />
+    </testcase>
+  </testsuite>
+</testsuites>

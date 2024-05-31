@@ -5,11 +5,13 @@ spi_demo.riscv:     file format elf32-littleriscv
 Disassembly of section .text:
 
 40000000 <main>:
-40000000:	aaaab7b7          	lui	x15,0xaaaab
-40000004:	20010737          	lui	x14,0x20010
-40000008:	aaa78793          	addi	x15,x15,-1366 # aaaaaaaa <_end+0x6aaaaa8a>
-4000000c:	00f72423          	sw	x15,8(x14) # 20010008 <main-0x1ffefff8>
-40000010:	020207b7          	lui	x15,0x2020
-40000014:	19f78793          	addi	x15,x15,415 # 202019f <main-0x3dfdfe61>
-40000018:	00f72023          	sw	x15,0(x14)
-4000001c:	0000006f          	jal	x0,4000001c <main+0x1c>
+40000000:	02020737          	lui	x14,0x2020
+40000004:	200107b7          	lui	x15,0x20010
+40000008:	19f70713          	addi	x14,x14,415 # 202019f <main-0x3dfdfe61>
+4000000c:	00e7a023          	sw	x14,0(x15) # 20010000 <main-0x1fff0000>
+40000010:	200106b7          	lui	x13,0x20010
+40000014:	3e700793          	addi	x15,x0,999
+40000018:	00e6a023          	sw	x14,0(x13) # 20010000 <main-0x1fff0000>
+4000001c:	fff78793          	addi	x15,x15,-1
+40000020:	fe079ce3          	bne	x15,x0,40000018 <main+0x18>
+40000024:	0000006f          	jal	x0,40000024 <main+0x24>

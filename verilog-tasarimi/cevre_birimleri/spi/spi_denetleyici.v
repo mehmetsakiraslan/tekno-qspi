@@ -132,8 +132,8 @@ module spi_denetleyici (
 
    reg [1:0] out_mod;
    assign io_qspi_data = out_mod==2'b11 ? t_buffer[31:28] : 
-                         out_mod==2'b10 ? {t_buffer[31:30],2'bZZ} : 
-                         out_mod==2'b01 ? {3'bZZZ, t_buffer[31]} : 4'bZZZZ;
+                         out_mod==2'b10 ? {2'bZZ, t_buffer[31:30]} : 
+                         out_mod==2'b01 ? {2'b11, 1'bZ, t_buffer[31]} : 4'bZZZZ;
 
    always @(posedge clk_i) begin
       if(rst_i) begin

@@ -105,7 +105,7 @@ s25fl128s  flash(
         // Controls
         .SCK(spi_sck_o),
         .CSNeg(spi_cs_o),
-        .RSTNeg(),
+        .RSTNeg(1),
         .WPNeg(io_qspi_data[2]),
         .HOLDNeg(io_qspi_data[3])
 );

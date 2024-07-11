@@ -98,7 +98,9 @@ user_processor soc (
   .pwm1_o        (pwm1_o       )
 );
 //#(.mem_file_name("s25fl128s.mem"))
-s25fl128s  flash(
+s25fl128s  
+#(.mem_file_name("/home/mehmet/flash-model/S25fl128s/model/s25fl128s.mem"))
+flash(
         // Data Inputs/Outputs
         .SI(io_qspi_data[0]),
         .SO(io_qspi_data[1]),

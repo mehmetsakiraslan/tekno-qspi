@@ -51,6 +51,8 @@ module spi_denetleyici (
    wire new_inst = wb_stb_i; //TODO: change values
    // Bit counter
    reg [10:0] bit_ctr;
+   // Address enable flag
+   reg adr_en;
 
    // Name registers
    wire [31:0] QSPI_CCR = control_register_r[0];
@@ -83,7 +85,7 @@ module spi_denetleyici (
    wire [1:0] data_rate = (data_mod==2'b11) ? 4 : data_mod;
    // ack
    reg ack;
-   assign wb_ack_o = ack || wb_stb_i && (wb_adr_i!=0);
+   assign wb_ack_o = ack || wb_stb_i && (wb_adr_i!=0) && state==IDLE;
    // flag to stop
    reg inst_flag;
 
@@ -118,13 +120,17 @@ module spi_denetleyici (
          for(i=0; i<10; i=i+1) begin
             control_register_r[i] <= 0;
             inst_flag <= 0;
+            adr_en <= 0;
          end
       end
       else begin
          if(wb_we_i && ~busy) begin
             control_register_r[wb_adr_i>>2] = wb_dat_i;
-            if(wb_adr_i==0 && !wb_ack_o) begin
+            if(wb_adr_i==0 && !wb_ack_o && control_register_r[0]!=0) begin
                inst_flag <= 1;
+            end
+            if(wb_adr_i==4 && !wb_ack_o) begin
+               adr_en <= 1;
             end
          end
       end
@@ -153,8 +159,8 @@ module spi_denetleyici (
             if(new_inst && inst_flag) begin
                state <= INST;
                // addr ekle
-               bit_ctr <= (QSPI_ADR==32'b0) ? 8 : 32;
-               t_buffer <= (QSPI_ADR==32'b0) ? {instruction_value, 24'b0} : {instruction_value, QSPI_ADR[23:0]};
+               bit_ctr <= (adr_en) ? 32 : 8;
+               t_buffer <= (adr_en) ? {instruction_value, QSPI_ADR[23:0]} : {instruction_value, 24'b0};
             end
          end
 
@@ -168,10 +174,11 @@ module spi_denetleyici (
                   if(dummy_cycles!=0) begin
                      state <= DUMMY;
                      bit_ctr <= dummy_cycles;
+                     adr_en <= 0;
                   end
                   else begin
                      state <= (write_flash) ? WRITE : READ;
-                     bit_ctr <= (data_size+1)<<3;
+                     bit_ctr <= ((data_size+1)<<3)-1;
                      word_ctr <= 1;
                      t_buffer <= control_register_r[2];
                   end
@@ -186,7 +193,7 @@ module spi_denetleyici (
             else begin
                state <= (write_flash) ? WRITE : READ;
                bit_ctr <= data_size;
-               word_ctr <= 1;
+               word_ctr <= 2;
                t_buffer <= control_register_r[2];
             end
          end
@@ -206,22 +213,23 @@ module spi_denetleyici (
                state <= IDLE;
                bit_ctr <= 0;
                out_mod <= 2'b01;
+               control_register_r[0] <= 0;
             end
          end
 
          READ: begin
             if(bit_ctr != 0) begin
                case(data_mod)
-               sr: r_buffer <= {r_buffer, io_qspi_data[0]};
-               dr: r_buffer <= {r_buffer, io_qspi_data[1:0]};
-               qr: r_buffer <= {r_buffer, io_qspi_data[3:0]};
-               default: r_buffer <= {r_buffer, io_qspi_data[0]};
+               sr: control_register_r[word_ctr] <= {control_register_r[word_ctr], io_qspi_data[1]};
+               dr: control_register_r[word_ctr] <= {control_register_r[word_ctr], io_qspi_data[1:0]};
+               qr: control_register_r[word_ctr] <= {control_register_r[word_ctr], io_qspi_data[3:0]};
+               default: control_register_r[word_ctr] <= {control_register_r[word_ctr], io_qspi_data[1]};
                endcase
                bit_ctr <= bit_ctr - data_rate;
 
-               if((bit_ctr-data_rate)%32==0) begin
+               if((bit_ctr-data_rate+1)%32==0) begin
                   word_ctr <= word_ctr + 1;
-                  control_register_r[word_ctr] <= t_buffer;
+                  // control_register_r[word_ctr] <= r_buffer;
                end
             end
             else begin
@@ -229,6 +237,7 @@ module spi_denetleyici (
                state <= IDLE;
                bit_ctr <= 0;
                out_mod <= 2'b01;
+               control_register_r[0] <= 0;
             end
          end
          
@@ -236,9 +245,20 @@ module spi_denetleyici (
       end   
    end
 
+   reg sck_r;
+   always @(posedge clk_i) begin
+      if(rst_i) begin
+         sck_r <= 0;
+      end
+      // Assumption!! prescale must be odd number.
+      if((prescale_ctr == (prescale+1)>>1) || (prescale_ctr == 0)) begin
+         // clock_en <= 1;
+         sck_r <= ~sck_r;
+      end
+   end
    // // Control sck and cs
    assign spi_cs_o = (state==IDLE); //|| (state==IDLE && new_inst);
    // reg sck;
-   assign spi_sck_o = (prescale==0) ? clk_i&&(state!=IDLE) : clock_en&&(state!=IDLE);
+   assign spi_sck_o = (prescale==0) ? clk_i&&(state!=IDLE) : (prescale==1) ? clock_en&&(state!=IDLE) : sck_r&&(state!=IDLE);
 
 endmodule

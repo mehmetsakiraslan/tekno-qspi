@@ -6,7 +6,3 @@ add wave -position end  vsim:/teknofest_wrapper/flash/CSNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/RSTNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/HOLDNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/WPNeg
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_ack_o
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/control_register_r
-add wave -position 7  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/clk_i
-add wave -position 9  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_we_i

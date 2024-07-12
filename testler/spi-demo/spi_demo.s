@@ -514,26 +514,31 @@ strlen:
 	.globl	main
 	.type	main, @function
 main:
-	li	a1,33751040
-	li	a0,16777216
-	li	a2,8192
-	addi	a1,a1,259
-	li	a5,0
 	li	a4,536936448
-	li	a6,7864320
-	addi	a0,a0,-6
+	li	a0,33751040
+	li	a7,16777216
+	li	a1,-1431654400
+	li	a2,8192
+	addi	a0,a0,259
+	li	a5,0
+	addi	a7,a7,-6
+	li	t1,7864320
+	addi	a6,a4,28
+	addi	a1,a1,-1366
 	addi	a2,a2,1808
 	j	.L134
 .L137:
-	sw	a0,4(a4)
-	sw	a1,0(a4)
+	sw	t1,4(a4)
+	sw	a1,0(a6)
+	sw	a0,0(a4)
 	addi	a5,a5,1
 	beq	a5,a2,.L135
 .L134:
 	andi	a3,a5,1
 	beq	a3,zero,.L137
-	sw	a6,4(a4)
-	sw	a1,0(a4)
+	sw	a7,4(a4)
+	sw	a1,0(a6)
+	sw	a0,0(a4)
 	addi	a5,a5,1
 	bne	a5,a2,.L134
 .L135:

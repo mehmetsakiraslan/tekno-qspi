@@ -83,9 +83,10 @@ while(ctr<10){
     
     for(int k=0; k<10000; k++){
         if(k % 2 == 0)
-        QSPI_ADR = 0x00FFFFFA;
+            QSPI_ADR = 0x00780000;
         else
-        QSPI_ADR = 0x00780000;
+            QSPI_ADR = 0x00FFFFFA;
+        QSPI_DR5 = 0xaaaaaaaa;
         QSPI_CCR = ccr.bits;
     }
     

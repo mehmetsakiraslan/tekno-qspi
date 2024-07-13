@@ -6,3 +6,15 @@ add wave -position end  vsim:/teknofest_wrapper/flash/CSNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/RSTNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/HOLDNeg
 add wave -position end  vsim:/teknofest_wrapper/flash/WPNeg
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_adr_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_dat_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_we_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_stb_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_sel_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_cyc_i
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_ack_o
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_dat_o
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/io_qspi_data
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/spi_cs_o
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/spi_sck_o
+add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/control_register_r

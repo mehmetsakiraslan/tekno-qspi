@@ -48,6 +48,8 @@ module spi_denetleyici (
    reg [31:0] control_register_r [9:0];
 
    reg [31:0] dat_r;
+   // flag to avoid wrond writes to data register
+   reg reg_write_en;
    
    // word counter for dr registers
    reg [3:0] word_ctr;
@@ -138,6 +140,8 @@ module spi_denetleyici (
          end
          inst_flag <= 0;
          ack <= 0;
+         dat_r <= 0;
+         reg_write_en <= 0;
       end
       else begin
          if(ack_flag && state==IDLE && !ack) begin
@@ -206,8 +210,9 @@ module spi_denetleyici (
                   end
                   else begin
                      state <= (write_flash) ? WRITE : READ;
-                     bit_ctr <= ((data_size+1)<<3)-1;
-                     word_ctr <= 1;
+                     reg_write_en <= 0;
+                     bit_ctr <= ((data_size+1)<<3);
+                     word_ctr <= 0;
                      buffer <= control_register_r[2];
                   end
                end
@@ -220,8 +225,9 @@ module spi_denetleyici (
             end
             else begin
                state <= (write_flash) ? WRITE : READ;
-               bit_ctr <= data_size;
-               word_ctr <= 2;
+               reg_write_en <= 0;
+               bit_ctr <= ((data_size+1)<<3);
+               word_ctr <= 0;
                buffer <= control_register_r[2];
             end
          end
@@ -231,9 +237,10 @@ module spi_denetleyici (
                bit_ctr <= bit_ctr - data_rate;
                buffer <= buffer << data_rate;
                
-               if((bit_ctr-data_rate)%32==0) begin
-                  word_ctr <= word_ctr + 1;
+               if(bit_ctr%32==0 && reg_write_en) begin
+                  reg_write_en <= 1;
                   buffer <= control_register_r[word_ctr+2];
+                  word_ctr <= word_ctr + 1;
                end
             end
             else begin
@@ -248,19 +255,21 @@ module spi_denetleyici (
          READ: begin
             if(bit_ctr != 0) begin
                case(data_mod)
-               sr: buffer[word_ctr] <= {buffer[word_ctr], io_qspi_data[1]};
-               dr: buffer[word_ctr] <= {buffer[word_ctr], io_qspi_data[1:0]};
-               qr: buffer[word_ctr] <= {buffer[word_ctr], io_qspi_data[3:0]};
-               default: buffer[word_ctr] <= {buffer[word_ctr], io_qspi_data[1]};
+               sr: buffer <= {buffer, io_qspi_data[1]};
+               dr: buffer <= {buffer, io_qspi_data[1:0]};
+               qr: buffer <= {buffer, io_qspi_data[3:0]};
+               default: buffer <= {buffer, io_qspi_data[1]};
                endcase
                bit_ctr <= bit_ctr - data_rate;
 
-               if((bit_ctr-data_rate+1)%32==0) begin
-                  word_ctr <= word_ctr + 1;
+               if(bit_ctr%32==0 && reg_write_en) begin
+                  reg_write_en <= 1;
                   control_register_r[2+word_ctr] <= buffer; 
+                  word_ctr <= word_ctr + 1;
                end
             end
             else begin
+               control_register_r[2+word_ctr] <= buffer; 
                ack_flag <= 1;
                state <= IDLE;
                bit_ctr <= 0;

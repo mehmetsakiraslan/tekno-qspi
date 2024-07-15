@@ -15,15 +15,6 @@ int main(){
 
     // QSPI_ADR = 0x00780000; //0x0000ffff;
 
-    // QSPI_DR0 = 0x0000ffff;
-//     QSPI_DR1 = 0xffffffff;
-//     QSPI_DR2 = 0xaaaaaaaa;
-//     QSPI_DR3 = 0xffffffff;
-//     QSPI_DR4 = 0xaaaaaaaa;
-//     QSPI_DR5 = 0xffffffff;
-//     QSPI_DR6 = 0xaaaaaaaa;
-//     QSPI_DR7 = 0xffffffff;
-
 
 
 /////
@@ -71,24 +62,109 @@ while(ctr<10){
 
     
 
-    
-
+    uint32_t value;    
+/*
     ccr.fields.inst_value = CMD_READ;
     ccr.fields.prescale = 1;
-    ccr.fields.veri_boyutu = 3;
+    ccr.fields.veri_boyutu = 4;
     ccr.fields.flash_yaz = 0;
     ccr.fields.veri_mod = 1;
     ccr.fields.clear_status_reg = 0;
     ccr.fields.dummy_cycle = 0;
     
-    for(int k=0; k<10000; k++){
+    int k=0;
+    while(value!=0x01020304){
         if(k % 2 == 0)
-            QSPI_ADR = 0x00780000;
+            QSPI_ADR = 0x000000a0; //0x00780000;
         else
-            QSPI_ADR = 0x00FFFFFA;
+            QSPI_ADR = 0x000000b0; //0x00FFFFFA;
         QSPI_DR5 = 0xaaaaaaaa;
         QSPI_CCR = ccr.bits;
+        value = QSPI_DR0;
+        k++;
     }
+*/
+    
+
+    ccr.fields.inst_value = CMD_WREN;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 0;
+    ccr.fields.flash_yaz = 0;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    QSPI_CCR = ccr.bits;
+
+
+    ccr.fields.inst_value = CMD_RDSR1;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 1;
+    ccr.fields.flash_yaz = 0;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    for(int k=0; k<100; k++)
+        QSPI_CCR = ccr.bits;
+    
+    QSPI_DR0 = 0xaaaaaaaa;
+    QSPI_DR1 = 0xbbffffff;
+    QSPI_DR2 = 0xdeadbeef;
+    QSPI_DR3 = 0xffff1fff;
+    QSPI_DR4 = 0x3aaaaaaa;
+    QSPI_DR5 = 0x5ffffff7;
+    QSPI_DR6 = 0x4aaaaaa6;
+    QSPI_DR7 = 0x14e2a657;
+    QSPI_ADR = 0x000000b0; //0x0000b300;
+
+    ccr.fields.inst_value = CMD_PP;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 4;
+    ccr.fields.flash_yaz = 1;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    QSPI_CCR = ccr.bits;
+
+
+    ccr.fields.inst_value = CMD_RDSR1;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 1;
+    ccr.fields.flash_yaz = 0;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    value = 100;
+    while((value && 0x000000ff) != 0 ) {
+        QSPI_CCR = ccr.bits;
+        value = QSPI_DR0;
+    }
+
+    ccr.fields.inst_value = CMD_RDSR1;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 1;
+    ccr.fields.flash_yaz = 0;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    for(int k=0; k<100; k++)
+        QSPI_CCR = ccr.bits;
+
+
+    ccr.fields.inst_value = CMD_READ;
+    ccr.fields.prescale = 1;
+    ccr.fields.veri_boyutu = 4;
+    ccr.fields.flash_yaz = 0;
+    ccr.fields.veri_mod = 1;
+    ccr.fields.clear_status_reg = 0;
+    ccr.fields.dummy_cycle = 0;
+
+    for(int k=0; k<100; k++)
+        QSPI_CCR = ccr.bits;
     
     // SPI_WDATA = 0x98;
     // SPI_CTRL = 0x000F0001;

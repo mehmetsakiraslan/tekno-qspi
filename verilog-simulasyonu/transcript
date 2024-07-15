@@ -1,20 +1,7 @@
 # OpenFile vsim.wlf
-add wave -position end  vsim:/teknofest_wrapper/flash/SI
-add wave -position end  vsim:/teknofest_wrapper/flash/SO
-add wave -position end  vsim:/teknofest_wrapper/flash/SCK
-add wave -position end  vsim:/teknofest_wrapper/flash/CSNeg
-add wave -position end  vsim:/teknofest_wrapper/flash/RSTNeg
-add wave -position end  vsim:/teknofest_wrapper/flash/HOLDNeg
-add wave -position end  vsim:/teknofest_wrapper/flash/WPNeg
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_adr_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_dat_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_we_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_stb_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_sel_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_cyc_i
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_ack_o
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/wb_dat_o
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/io_qspi_data
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/spi_cs_o
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/spi_sck_o
-add wave -position end  vsim:/teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/control_register_r
+# do waveform/wave.do
+# ** Error: (vish-4014) No objects found matching '/teknofest_wrapper/flash/CS'.
+# Executing ONERROR command at macro ./waveform/wave.do line 8
+add wave -position end  vsim:/teknofest_wrapper/flash/Mem
+add wave -position end  vsim:/teknofest_wrapper/flash/WREN
+add wave -position end  vsim:/teknofest_wrapper/flash/WEL

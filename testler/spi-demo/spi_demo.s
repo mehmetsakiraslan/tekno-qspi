@@ -514,34 +514,79 @@ strlen:
 	.globl	main
 	.type	main, @function
 main:
+	li	a5,33554432
 	li	a4,536936448
-	li	a0,33751040
-	li	a7,16777216
-	li	a1,-1431654400
-	li	a2,8192
-	addi	a0,a0,259
-	li	a5,0
-	addi	a7,a7,-6
-	li	t1,7864320
-	addi	a6,a4,28
-	addi	a1,a1,-1366
-	addi	a2,a2,1808
-	j	.L134
-.L137:
-	sw	t1,4(a4)
-	sw	a1,0(a6)
-	sw	a0,0(a4)
-	addi	a5,a5,1
-	beq	a5,a2,.L135
+	addi	a5,a5,262
+	sw	a5,0(a4)
+	li	a5,33619968
+	addi	a5,a5,261
+	sw	a5,0(a4)
+	li	a3,536936448
+	li	a4,99
+.L132:
+	sw	a5,0(a3)
+	addi	a4,a4,-1
+	bne	a4,zero,.L132
+	li	a5,-1431654400
+	addi	a5,a5,-1366
+	sw	a5,8(a3)
+	li	a5,-1140850688
+	addi	a5,a5,-1
+	sw	a5,12(a3)
+	li	a5,-559038464
+	addi	a5,a5,-273
+	sw	a5,16(a3)
+	li	a5,-57344
+	addi	a5,a5,-1
+	sw	a5,20(a3)
+	li	a5,984264704
+	addi	a5,a5,-1366
+	sw	a5,24(a3)
+	li	a5,1610612736
+	addi	a5,a5,-9
+	sw	a5,28(a3)
+	li	a5,1252700160
+	addi	a5,a5,-1370
+	sw	a5,32(a3)
+	li	a5,350396416
+	addi	a5,a5,1623
+	sw	a5,36(a3)
+	li	a5,176
+	sw	a5,4(a3)
+	li	a5,33816576
+	addi	a5,a5,1282
+	sw	a5,0(a3)
+	li	a5,33619968
+	addi	a5,a5,261
+	sw	a5,0(a3)
+	lw	a4,8(a3)
+	beq	a4,zero,.L133
+	li	a4,536936448
 .L134:
-	andi	a3,a5,1
-	beq	a3,zero,.L137
-	sw	a7,4(a4)
-	sw	a1,0(a6)
-	sw	a0,0(a4)
-	addi	a5,a5,1
-	bne	a5,a2,.L134
+	sw	a5,0(a4)
+	lw	a3,8(a4)
+	bne	a3,zero,.L134
+.L133:
+	li	a5,33619968
+	li	a4,536936448
+	addi	a5,a5,261
+	sw	a5,0(a4)
+	li	a3,536936448
+	li	a4,99
 .L135:
-	j	.L135
+	sw	a5,0(a3)
+	addi	a4,a4,-1
+	bne	a4,zero,.L135
+	li	a5,33816576
+	addi	a5,a5,259
+	sw	a5,0(a3)
+	li	a4,99
+	li	a3,536936448
+.L136:
+	sw	a5,0(a3)
+	addi	a4,a4,-1
+	bne	a4,zero,.L136
+.L137:
+	j	.L137
 	.size	main, .-main
 	.ident	"GCC: (g2ee5e430018) 12.2.0"

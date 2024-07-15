@@ -248,6 +248,7 @@ module s25fl128s
     reg  HOLDNegOut_zd = 1'bZ  ;
 
     assign SI_z = SIOut_z;
+
     assign SO_z = SOut_z;
 
     parameter UserPreload       = 1;
@@ -266,7 +267,7 @@ module s25fl128s
     parameter  SecNum256        = 63;
     parameter  PageNum64        = 20'h1FFFF;
     parameter  PageNum256       = 16'h7FFF;
-    parameter  AddrRANGE        = 24'hFFFFFF;
+    parameter  AddrRANGE        = 24'h00FFFF; //24'hFFFFFF;
     parameter  HiAddrBit        = 31;
     parameter  OTPSize          = 1023;
     parameter  OTPLoAddr        = 12'h000;

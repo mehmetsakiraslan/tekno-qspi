@@ -35,14 +35,15 @@ module spi_denetleyici (
    dr = 2'b10,
    qr = 2'b11;
 
-   // Inst that require address
+   // Insts
    localparam [7:0] 
-   CMD_READ = 2'h03,
-   CMD_DOR = 2'h3B,
-   CMD_QOR = 2'h6B,
-   CMD_PP = 2'h02,
-   CMD_QPP = 2'h32,
-   CMD_SE = 2'hD8;
+   CMD_READ = 8'h03,
+   CMD_DOR = 8'h3B,
+   CMD_QOR = 8'h6B,
+   CMD_PP = 8'h02,
+   CMD_QPP = 8'h32,
+   CMD_SE = 8'hD8,
+   CMD_WREN = 8'h06;
 
    // Define registers 
    reg [31:0] control_register_r [9:0];
@@ -100,12 +101,16 @@ module spi_denetleyici (
    // assign dat_o
    assign wb_dat_o = dat_r;
    // adr en
-   assign adr_en = (instruction_value==CMD_READ);
-                     // (instruction_value==CMD_DOR) ||
-                     // (instruction_value==CMD_QOR) ||
-                     // (instruction_value==CMD_PP) ||
-                     // (instruction_value==CMD_QPP) ||
-                     // (instruction_value==CMD_SE);
+   assign adr_en = (instruction_value==CMD_READ) ||
+                     (instruction_value==CMD_DOR) ||
+                     (instruction_value==CMD_QOR) ||
+                     (instruction_value==CMD_PP) ||
+                     (instruction_value==CMD_QPP) ||
+                     (instruction_value==CMD_SE);
+
+//// todo: butun degerleri ekle
+   // Dont read or write flash commands
+   wire read_write_unable = (instruction_value==CMD_WREN);
    // flag to stop
    reg inst_flag;
 
@@ -209,9 +214,10 @@ module spi_denetleyici (
                      bit_ctr <= dummy_cycles;
                   end
                   else begin
-                     state <= (write_flash) ? WRITE : READ;
+                     state <= (read_write_unable) ? IDLE : (write_flash) ? WRITE : READ;
+                     ack_flag <= (read_write_unable) ? 1 : 0;
                      reg_write_en <= 0;
-                     bit_ctr <= ((data_size+1)<<3);
+                     bit_ctr <= ((data_size)<<3);
                      word_ctr <= 0;
                      buffer <= control_register_r[2];
                   end
@@ -224,21 +230,21 @@ module spi_denetleyici (
                bit_ctr <= bit_ctr - data_rate; 
             end
             else begin
-               state <= (write_flash) ? WRITE : READ;
+               state <= (read_write_unable) ? IDLE : (write_flash) ? WRITE : READ;
+               ack_flag <= (read_write_unable) ? 1 : 0;
                reg_write_en <= 0;
-               bit_ctr <= ((data_size+1)<<3);
+               bit_ctr <= ((data_size)<<3);
                word_ctr <= 0;
                buffer <= control_register_r[2];
             end
          end
 
          WRITE: begin
-            if(bit_ctr != 0) begin
+            if(bit_ctr != 1) begin
                bit_ctr <= bit_ctr - data_rate;
                buffer <= buffer << data_rate;
                
-               if(bit_ctr%32==0 && reg_write_en) begin
-                  reg_write_en <= 1;
+               if(bit_ctr%32==1) begin
                   buffer <= control_register_r[word_ctr+2];
                   word_ctr <= word_ctr + 1;
                end
@@ -249,11 +255,12 @@ module spi_denetleyici (
                bit_ctr <= 0;
                out_mod <= 2'b01;
                control_register_r[0] <= 0;
+               word_ctr <= 0;
             end
          end
 
          READ: begin
-            if(bit_ctr != 0) begin
+            if(bit_ctr != 1) begin
                case(data_mod)
                sr: buffer <= {buffer, io_qspi_data[1]};
                dr: buffer <= {buffer, io_qspi_data[1:0]};
@@ -262,19 +269,32 @@ module spi_denetleyici (
                endcase
                bit_ctr <= bit_ctr - data_rate;
 
-               if(bit_ctr%32==0 && reg_write_en) begin
-                  reg_write_en <= 1;
-                  control_register_r[2+word_ctr] <= buffer; 
+               if(bit_ctr%32==1) begin
+                  case(data_mod)
+                  sr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1]}; 
+                  dr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1:0]}; 
+                  qr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[3:0]};
+                  default: control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1]}; 
+                  endcase
                   word_ctr <= word_ctr + 1;
                end
             end
             else begin
-               control_register_r[2+word_ctr] <= buffer; 
+               if(bit_ctr%32==1) begin
+                  case(data_mod)
+                  sr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1]}; 
+                  dr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1:0]}; 
+                  qr:   control_register_r[2+word_ctr] <= {buffer, io_qspi_data[3:0]};
+                  default: control_register_r[2+word_ctr] <= {buffer, io_qspi_data[1]}; 
+                  endcase
+                  word_ctr <= word_ctr + 1;
+               end
                ack_flag <= 1;
                state <= IDLE;
                bit_ctr <= 0;
                out_mod <= 2'b01;
                control_register_r[0] <= 0;
+               word_ctr <= 0;
             end
          end
          

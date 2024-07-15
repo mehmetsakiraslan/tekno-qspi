@@ -1,7 +1,7 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
     <property name="random_seed" value="123456789" />
-    <testcase classname="test_teknofest_wrapper" file="/home/mehmet/2024qspi/tekno-kizil/verilog-simulasyonu/test_teknofest_wrapper.py" lineno="77" name="test_teknofest_wrapper" ratio_time="37067.493877777626" sim_time_ns="2000055.001" time="53.95711421966553">
+    <testcase classname="test_teknofest_wrapper" file="/home/mehmet/2024qspi/tekno-kizil/verilog-simulasyonu/test_teknofest_wrapper.py" lineno="77" name="test_teknofest_wrapper" ratio_time="34426.64000516226" sim_time_ns="2000055.001" time="58.09614300727844">
       <failure />
     </testcase>
   </testsuite>

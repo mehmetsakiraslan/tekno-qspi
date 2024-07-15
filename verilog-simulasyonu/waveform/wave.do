@@ -28,7 +28,7 @@ add wave -radix unsigned -noupdate /teknofest_wrapper/soc/isl_blksiz/veriyolu_du
 add wave -radix unsigned -noupdate /teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/word_ctr
 add wave -radix hexadecimal -noupdate /teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/buffer
 add wave -noupdate /teknofest_wrapper/soc/isl_blksiz/veriyolu_dut/spi_denetleyici_dut/state
-add wave -radix hexadecimal -noupdate /teknofest_wrapper/flash/Mem
+
 add wave -noupdate /teknofest_wrapper/flash/WREN
 add wave -noupdate /teknofest_wrapper/flash/WEL
 

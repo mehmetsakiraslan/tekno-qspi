@@ -514,47 +514,50 @@ strlen:
 	.globl	main
 	.type	main, @function
 main:
-	li	a3,536936448
+	li	a1,16908288
+	li	a5,536936448
 	li	a4,33816576
-	li	a1,-1431654400
+	li	a7,16777216
+	li	a0,-1431654400
+	addi	a1,a1,772
 	addi	a4,a4,259
-	li	a5,0
-	li	a7,160
-	addi	a6,a3,28
-	addi	a1,a1,-1366
-	li	a0,1000
-	j	.L134
-.L148:
-	sw	a7,4(a3)
-	sw	a1,0(a6)
-	sw	a4,0(a3)
-	lw	a2,8(a3)
-	addi	a5,a5,1
-	beq	a5,a0,.L147
-.L134:
-	andi	a2,a5,1
-	beq	a2,zero,.L148
-	sw	zero,4(a3)
-	sw	a1,0(a6)
-	sw	a4,0(a3)
-	lw	a2,8(a3)
-	addi	a5,a5,1
-	bne	a5,a0,.L134
-.L147:
+	li	a3,0
+	addi	a7,a7,-6
+	li	t1,7864320
+	addi	a6,a5,28
+	addi	a0,a0,-1366
+	j	.L132
+.L152:
+	sw	t1,4(a5)
+	sw	a0,0(a6)
+	sw	a4,0(a5)
+	lw	a2,8(a5)
+	addi	a3,a3,1
+	beq	a2,a1,.L151
+.L132:
+	andi	a2,a3,1
+	beq	a2,zero,.L152
+	sw	a7,4(a5)
+	sw	a0,0(a6)
+	sw	a4,0(a5)
+	lw	a2,8(a5)
+	addi	a3,a3,1
+	bne	a2,a1,.L132
+.L151:
 	li	a5,33554432
+	li	a3,536936448
 	addi	a5,a5,262
 	li	a4,33619968
 	sw	a5,0(a3)
 	addi	a4,a4,261
 	sw	a4,0(a3)
 	li	a5,99
-	li	a3,536936448
-.L135:
+.L133:
 	sw	a4,0(a3)
 	addi	a5,a5,-1
-	bne	a5,zero,.L135
-	li	a5,447393792
-	addi	a5,a5,-1373
+	bne	a5,zero,.L133
+	li	a5,-1431654400
+	addi	a5,a5,-1366
 	sw	a5,8(a3)
 	li	a5,-1140850688
 	addi	a5,a5,-1
@@ -574,41 +577,39 @@ main:
 	li	a5,1252700160
 	addi	a5,a5,-1370
 	sw	a5,32(a3)
-	li	a5,618831872
-	addi	a5,a5,1621
+	li	a5,350396416
+	addi	a5,a5,1623
 	sw	a5,36(a3)
-	li	a5,176
+	li	a5,11141120
 	sw	a5,4(a3)
-	li	a5,33816576
+	li	a5,35651584
 	addi	a5,a5,1282
 	li	a4,33619968
 	sw	a5,0(a3)
 	addi	a4,a4,261
 	sw	a4,0(a3)
 	lw	a5,8(a3)
-	beq	a5,zero,.L136
+	beq	a5,zero,.L137
 	li	a5,536936448
-.L137:
+.L138:
 	sw	a4,0(a5)
 	lw	a3,8(a5)
-	bne	a3,zero,.L137
-.L136:
+	bne	a3,zero,.L138
+.L137:
 	li	a4,33619968
 	li	a5,536936448
 	addi	a4,a4,261
 	sw	a4,0(a5)
 	li	a3,536936448
 	li	a5,99
-.L138:
+.L139:
 	sw	a4,0(a3)
 	addi	a5,a5,-1
-	bne	a5,zero,.L138
-	li	a4,33816576
-	li	a5,208
-	addi	a4,a4,259
-	sw	a5,4(a3)
-	sw	a4,0(a3)
-.L139:
-	j	.L139
+	bne	a5,zero,.L139
+	li	a5,35651584
+	addi	a5,a5,259
+	sw	a5,0(a3)
+.L140:
+	j	.L140
 	.size	main, .-main
 	.ident	"GCC: (g2ee5e430018) 12.2.0"

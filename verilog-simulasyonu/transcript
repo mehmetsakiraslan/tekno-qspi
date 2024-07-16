@@ -3,4 +3,3 @@
 # do waveform/wave.do
 # ** Error: (vish-4014) No objects found matching '/teknofest_wrapper/flash/CS'.
 # Executing ONERROR command at macro ./waveform/wave.do line 8
-add wave -position end  vsim:/teknofest_wrapper/flash/Mem
